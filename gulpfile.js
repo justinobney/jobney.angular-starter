@@ -21,6 +21,9 @@ server.use(livereload({
 }));
 server.use(express.static(__dirname + '/build'));    
 
+// =====================================
+//            File Bundles
+// =====================================
 var base = { base: './src/app/' };
 
 var vendorJS = [
@@ -37,6 +40,10 @@ var appJS = [
 var filesToMove = [
     './src/partials/**/*.*'
 ];
+
+// =====================================
+//              Tasks
+// =====================================
 
 gulp.task('clean', function(){
   return gulp.src(['./build/*'], {read:false})
@@ -56,7 +63,7 @@ gulp.task('js', function() {
         .pipe(uglify())
         .pipe(gulp.dest('./build/app'));
 
-    
+
     gulp.src('./src/index.html')
         .pipe(inject(gulp.src('./build/app/vendors.js', {read: false, base: './src/app/'}), {starttag: '<!-- inject:vendor:{{ext}} -->', ignorePath: '/build'}))
         .pipe(inject(gulp.src('./build/app/app.js', {read: false, base: './src/app/'}), {starttag: '<!-- inject:app:{{ext}} -->', ignorePath: '/build'}))
