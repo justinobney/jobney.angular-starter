@@ -1,0 +1,22 @@
+<div ng-controller="LoginCtrl as loginCtrl">
+    <form ng-submit="loginCtrl.login()" wait-for-auth ng-show-auth="logout" role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" ng-model="loginCtrl.email" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" ng-model="loginCtrl.pass" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-default">Sign In</button>
+    </form>
+    <div ng-show-auth="login">
+        <ul class="nav navbar-nav">
+            <li>
+                <a>
+                    <img class="img-circle" ng-src="http://www.gravatar.com/avatar/{{auth.md5_hash}}" alt="" width="30px">
+                    Welcome {{auth.email}}
+                </a>
+            </li>
+            <li><a ng-click="loginCtrl.logout()">Log Out</a></li>
+        </ul>
+    </div>
+</div>

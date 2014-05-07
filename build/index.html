@@ -6,6 +6,7 @@
     <!-- Latest compiled and minified CSS & JS -->
     <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" media="screen" href="css/app.css">
+    <script src='https://cdn.firebase.com/js/client/1.0.11/firebase.js'></script>
 </head>
 <body ng-app="jobney.angular-starter">
     <div ng-include="'partials/main-nav.html'"></div>
@@ -13,7 +14,7 @@
         <div class="jumbotron">
             <div class="container">
                 <h1>Hello, world!</h1>
-                <p>Contents ...</p>
+                <pre>{{auth|json}}</pre>
                 <p>
                     <a class="btn btn-primary btn-lg">Learn more</a>
                 </p>
@@ -24,6 +25,10 @@
     <script src="/app/vendors.js"></script>
     <!-- endinject -->
 
+    <script src='https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js'></script>
+    <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.4.1/firebase-simple-login.js'>
+    </script>
+    
     <!-- inject:app:js -->
     <script src="/app/app.js"></script>
     <!-- endinject -->

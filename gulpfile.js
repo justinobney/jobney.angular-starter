@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     clean = require('gulp-clean'),
     uglify = require('gulp-uglify'),
+    ngmin = require('gulp-ngmin'),
     watch = require('gulp-watch'),
     concat = require('gulp-concat'),
     ngHtml2Js = require("gulp-ng-html2js"),
@@ -37,9 +38,6 @@ var appJS = [
     '!./src/app/**/*.spec.js'
 ];
 
-var filesToMove = [
-    './src/partials/**/*.*'
-];
 
 // =====================================
 //              Tasks
@@ -61,7 +59,8 @@ gulp.task('js', function() {
     // Concatenate AND minify app sources
     var appStream = gulp.src(appJS)
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        .pipe(ngmin())
+        //.pipe(uglify())
         .pipe(gulp.dest('./build/app'));
 
 
@@ -83,9 +82,13 @@ gulp.task('templatify', function () {
 });
 
 gulp.task('move', function () {
-   
-     gulp.src(filesToMove)
+     gulp
+        .src(['./src/partials/**/*.*'])
         .pipe(gulp.dest('./build/partials'));
+
+    gulp
+        .src(['./src/css/**/*.*'])
+        .pipe(gulp.dest('./build/css'));
 });
 
 gulp.task('serve', function() {

@@ -1,5 +1,8 @@
-(function() {
-    'use strict';
+'use strict';
 
-    angular.module('jobney.angular-starter', [/* 'jobney.angular-starter.templates' */]);
-})();
+angular
+    .module('jobney.angular-starter', [
+        /* 'jobney.angular-starter.templates' */
+        'firebase',
+        'waitForAuth'
+    ])
