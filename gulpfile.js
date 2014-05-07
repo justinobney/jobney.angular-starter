@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     refresh = require('gulp-livereload'),
     lrserver = require('tiny-lr')(),
     express = require('express'),
-    livereload = require('connect-livereload')
+    livereload = require('connect-livereload'),
     livereloadport = 35729,
     serverport = 5000;
 
@@ -46,8 +46,9 @@ var filesToMove = [
 // =====================================
 
 gulp.task('clean', function(){
-  return gulp.src(['./build/*'], {read:false})
-  .pipe(clean());
+  gulp
+    .src(['./build/*'], {read:false})
+    .pipe(clean());
 });
 
 // uglify task
@@ -65,8 +66,8 @@ gulp.task('js', function() {
 
 
     gulp.src('./src/index.html')
-        .pipe(inject(gulp.src('./build/app/vendors.js', {read: false, base: './src/app/'}), {starttag: '<!-- inject:vendor:{{ext}} -->', ignorePath: '/build'}))
-        .pipe(inject(gulp.src('./build/app/app.js', {read: false, base: './src/app/'}), {starttag: '<!-- inject:app:{{ext}} -->', ignorePath: '/build'}))
+        .pipe(inject(vendorStream, {starttag: '<!-- inject:vendor:{{ext}} -->', ignorePath: '/build'}))
+        .pipe(inject(appStream, {starttag: '<!-- inject:app:{{ext}} -->', ignorePath: '/build'}))
         .pipe(gulp.dest('./build'))
         .pipe(refresh(lrserver));
 });
@@ -82,8 +83,8 @@ gulp.task('templatify', function () {
 });
 
 gulp.task('move', function () {
-    
-    gulp.src(filesToMove)
+   
+     gulp.src(filesToMove)
         .pipe(gulp.dest('./build/partials'));
 });
 
@@ -98,12 +99,13 @@ gulp.task('serve', function() {
 gulp.task('watch', function () {
     gulp.watch([
             './src/partials/**/*.js',
+            './src/**/*.html',
             './src/app/**/*.js'
     ], base, function () {
-        gulp.run('js');
+        gulp.run('build');
     });
 });
 
-gulp.task('default', ['clean', 'move', 'js', 'watch', 'serve']);
+gulp.task('default', ['build', 'watch', 'serve']);
 
-gulp.task('build', ['templatify', 'js']);
+gulp.task('build', ['move', 'js']);

@@ -11,8 +11,8 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
 
         files: [
-            "bower_components/angular/angular.js",
-            "bower_components/angular-mocks/angular-mocks.js",
+            "_vendor/angular/angular.js",
+            "_vendor/angular-mocks/angular-mocks.js",
             "app/app.js",
             "app/**/**.js",
             "app/**/**.html",
@@ -25,10 +25,6 @@ module.exports = function (config) {
         // test results reporter to use
         // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
         reporters: ['progress', 'growl'],
-
-        htmlReporter: {
-            outputFile: 'testResults.html'
-        },
 
         // web server port
         port: 9876,
@@ -54,7 +50,7 @@ module.exports = function (config) {
         browsers: ['PhantomJS'],
 
         preprocessors: {
-            'App/**/*.html': 'ng-html2js'
+            'app/**/*.html': 'ng-html2js'
         },
 
         ngHtml2JsPreprocessor: {
