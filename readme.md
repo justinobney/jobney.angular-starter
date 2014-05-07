@@ -1,16 +1,9 @@
-Envoc Directives
+Jobney Angular Starter
 ====
 
-This is going to be a home for a common set of AngularJS
-directives that can be reused throught projects.
-
-Prefix all directives with o
-
-Example:
-
-```
-<div o-validation-message-for="firstName"></div>
-```
+This is just a simple base to prototype apps out. Typically I have been using
+the really great plnkr.co, but I need to get back into the tooling more, so here
+I stand.
 
 Installing
 ----
@@ -30,39 +23,3 @@ into the template cache.
 `
 gulp
 `
-
-Project Use
-----
-
-`Install-Package Envoc.Directives`
-
-*****
-
-Directives
-====
-
-oValidateWith
-----
-
-* Used as wrapper to map child validation messages to keys bound to error property
-* Child directive __oValidationMessageFor__ maps propertyName of error object in collection
-
-```
-<div o-validate-with errors="ctrl1.errors">
-    <div o-validation-message-for="firstName"></div>
-</div>
-```
-
-__where ctrl1.errors:__
-
-```
-[
-    { propertyName: '', type: 'length', errorMessage: 'This is global' },
-    { propertyName: 'firstName', type: 'required', errorMessage: 'First Name is required' },
-    { 
-        propertyName: 'lastName', 
-        type: 'length', 
-        errorMessage: 'Last Name must be between 2 and 256 characters' 
-    }
-];
-```
