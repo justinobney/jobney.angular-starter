@@ -1,5 +1,5 @@
 angular
-    .module('jobney.angular-starter')
+    .module('jobney.angular-starter.login')
    .factory('loginService', function($rootScope, $firebaseSimpleLogin, firebaseRef, $timeout) {
          var auth = null;
          return {

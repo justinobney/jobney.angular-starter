@@ -1,18 +1,29 @@
 angular
     .module('jobney.angular-starter')
-    .run(function($rootScope) {
+    .run(function($rootScope, $state, waitForAuth) {
         $rootScope.$on('$firebaseSimpleLogin:login', setUser)
+        $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            if(!$rootScope.auth && toState.name != 'login'){
+                event.preventDefault();
+            }
+        })
 
-        function setUser(e, auth){
+        function setUser(e, auth) {
             $rootScope.auth = auth;
+            $state.transitionTo('home');
         }
-    });
+    })
+    .config(function($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('home', {
+                url: '/',
+                templateUrl: '/partials/home.tmpl.html',
+                resolve: {
+                    auth: function(waitForAuth){
+                        return waitForAuth;
+                    }
+                }
+            });
 
-function pathRef(args) {
-    for (var i = 0; i < args.length; i++) {
-        if (typeof(args[i]) === 'object') {
-            args[i] = pathRef(args[i]);
-        }
-    }
-    return args.join('/');
-}
+        $urlRouterProvider.otherwise('/login');
+    });

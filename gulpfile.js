@@ -8,11 +8,14 @@ var gulp = require('gulp'),
     ngHtml2Js = require("gulp-ng-html2js"),
     inject = require("gulp-inject"),
     refresh = require('gulp-livereload'),
+    replace = require('gulp-replace'),
     lrserver = require('tiny-lr')(),
     express = require('express'),
     livereload = require('connect-livereload'),
+    pkg = require('./package.json'),
     livereloadport = 35729,
-    serverport = 5000;
+    serverport = 5000
+    ngAppBase = pkg.name;
 
 //We only configure the server here and start it only when running the watch task
 var server = express();
@@ -28,13 +31,17 @@ server.use(express.static(__dirname + '/build'));
 var base = { base: './src/app/' };
 
 var vendorJS = [
-    './src/_vendor/angular/angular.min.js'
+    './src/_vendor/angular/angular.min.js',
+    './src/_vendor/angular-ui-router/release/angular-ui-router.min.js'
 ];
 
 var appJS = [
-    './build/partials/**/*.js',
+    './src/buid_head.js',
+    './temp/**/**/*.tmpl.js',
     './src/app/app.js',
+    './src/app/**/*-module.js',
     './src/app/**/*.js',
+    './src/buid_foot.js',
     '!./src/app/**/*.spec.js'
 ];
 
@@ -45,7 +52,7 @@ var appJS = [
 
 gulp.task('clean', function(){
   gulp
-    .src(['./build/*'], {read:false})
+    .src(['./build/*', './temp/*'], {read:false})
     .pipe(clean());
 });
 
@@ -75,17 +82,17 @@ gulp.task('js', function() {
 gulp.task('templatify', function () {
     gulp.src("./src/**/*.tmpl.html")
     .pipe(ngHtml2Js({
-        moduleName: "jobney.angular-starter.templates",
-        prefix: "/"
+        moduleName: ngAppBase + '.templates',
+        prefix: "/",
+        rename: function (url) {
+            var last = url.split('/').pop();
+            return '/partials/' + last;
+        }
     }))
-    .pipe(gulp.dest("./build/partials"));
+    .pipe(gulp.dest("./temp"));
 });
 
 gulp.task('move', function () {
-     gulp
-        .src(['./src/partials/**/*.*'])
-        .pipe(gulp.dest('./build/partials'));
-
     gulp
         .src(['./src/css/**/*.*'])
         .pipe(gulp.dest('./build/css'));
@@ -109,6 +116,16 @@ gulp.task('watch', function () {
     });
 });
 
+gulp.task('rename', function(){
+  gulp.src([
+           './src/**/*.js',
+           '!./src/_vendor/*.js',
+           './src/**/*.html',
+        ])
+    .pipe(replace('jobney.pocketchange', ngAppBase))
+    .pipe(gulp.dest('src/'));
+});
+
 gulp.task('default', ['build', 'watch', 'serve']);
 
-gulp.task('build', ['move', 'js']);
+gulp.task('build', ['move','templatify', 'js']);
