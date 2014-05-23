@@ -14,6 +14,16 @@ This will install all `node_modules` and `bower_components` needed
 npm install
 `
 
+Rename
+----
+
+This will rename all references to the angular module => "jobney.angular-starter"
+to whatever is in your package.json "name" property
+
+`
+gulp rename
+`
+
 Building
 ----
 
